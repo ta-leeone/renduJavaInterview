@@ -23,15 +23,22 @@ class AsyncTest {
   );
 
   public static CompletableFuture<Option<Ceo>> getCeoById(String ceo_id) {
-    return null;
+	    return CompletableFuture.supplyAsync(() -> {
+	      return ceos.find(ceo -> ceo.id.equals(ceo_id));
+    });
   }
 
   public static CompletableFuture<Option<Enterprise>> getEnterpriseByCeoId(String ceo_id) {
-    return null;
+    return CompletableFuture.supplyAsync(() -> {
+      return enterprises.find(ent -> ent.ceo_id.equals(ceo_id));
+    });
   }
 
   public static CompletableFuture<Tuple2<Option<Ceo>, Option<Enterprise>>> getCEOAndEnterprise(String ceo_id) {
-    return null;
+    CompletableFuture<Option<Ceo>> ceoFuture = getCeoById(ceo_id);
+    CompletableFuture<Option<Enterprise>> entFuture = getEnterpriseByCeoId(ceo_id);
+
+    return ceoFuture.thenCombine(entFuture, (ceoOpt, entOpt) -> Tuple.of(ceoOpt, entOpt));
   }
 
 }

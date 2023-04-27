@@ -12,6 +12,14 @@ public class BasicTest {
    * alse return None in case of errors
    */
   public static Option<Integer> power(Integer i, Integer n) {
-    return Option.none();
+	   if (n > 0) {
+		   return Option.of(
+		              java.util.stream.IntStream.range(0, n)
+		                      .reduce(1, (a, b) -> a * i)
+		      );
+       }else {
+    	   return Option.none();
+       }
+	 
   }
 }
